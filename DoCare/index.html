@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DOCARE</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Import Poppins Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Smooth fade-in for content swaps */
+        .fade-in {
+            animation: fadeIn 300ms ease-out forwards;
+            opacity: 0;
+            transform: translateY(6px);
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-white text-gray-800 overflow-x-hidden">
+
+    <!-- Navbar -->
+    <nav
+        class="fixed top-0 left-0 w-full z-50 bg-gradient-to-r from-[#3acfd5] to-[#3a9dd5] px-6 md:px-8 py-4 flex justify-between items-center shadow-md">
+        <!-- Logo -->
+        <div class="text-2xl font-bold text-white">
+            DO<span class="text-green-200">CARE</span>
+        </div>
+
+        <!-- Links (hidden on small screens) -->
+        <ul class="hidden md:flex space-x-6 text-white font-medium">
+            <li class="relative group cursor-pointer hover:text-gray-200"><a href="#benefits">Benefits</a>
+                <span
+                    class="absolute left-0 bottom-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
+            </li>
+            <li class="relative group cursor-pointer hover:text-gray-200"><a href="#demo">Demo</a>
+                <span
+                    class="absolute left-0 bottom-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
+            </li>
+            <li class="relative group cursor-pointer hover:text-gray-200"><a href="#testimonials">Testimonials</a>
+                <span
+                    class="absolute left-0 bottom-0 w-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
+            </li>
+            <li class="relative group cursor-pointer hover:text-gray-200"><a href="#how-it-works">How It Works</a>
+                <span
+                    class="absolute left-0 bottom-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
+            </li>
+        </ul>
+
+        <!-- Buttons (hidden on small screens) -->
+        <div class="hidden md:flex space-x-4">
+            <button
+                class="bg-white/20 backdrop-blur-sm text-white font-semibold px-5 py-2 rounded-full border border-white hover:bg-white hover:text-[#3acfd5] transition">
+                Contact Us
+            </button>
+            <button
+                class="bg-white/20 backdrop-blur-sm text-white font-semibold px-5 py-2 rounded-full border border-white hover:bg-white hover:text-[#3acfd5] transition">
+                Login
+            </button>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <div class="md:hidden flex items-center">
+            <button id="menu-btn" class="text-white focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu"
+            class="hidden absolute top-full left-0 w-full bg-gradient-to-r from-[#3acfd5] to-[#3a9dd5] md:hidden z-40">
+            <ul class="flex flex-col space-y-4 px-6 py-4 text-white font-medium">
+                <li><a href="#benefits" class="cursor-pointer hover:text-gray-200">Benefits</a></li>
+                <li><a href="#demo" class="cursor-pointer hover:text-gray-200">Demo</a></li>
+                <li><a href="#testimonials" class="cursor-pointer hover:text-gray-200">Testimonials</a></li>
+                <li><a href="#how-it-works" class="cursor-pointer hover:text-gray-200">How It Works</a></li>
+                <li
+                    class="cursor-pointer bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-full text-center border border-white hover:bg-white hover:text-[#3acfd5] transition">
+                    Contact Us</li>
+                <li
+                    class="cursor-pointer bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-full text-center border border-white hover:bg-white hover:text-[#3acfd5] transition">
+                    Login</li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section
+        class="bg-gradient-to-b from-[#e6f8fb] to-white px-6 md:px-20 flex flex-col md:flex-row items-center justify-center min-h-screen pt-24 md:pt-32">
+        <!-- Left Content -->
+        <div class="max-w-xl text-center md:text-left">
+            <h1 class="text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight">
+                A Platform Designed for
+                <span class="text-[#23b4c9]">Aatmanirbhar Doctors</span>
+            </h1>
+            <p class="text-gray-600 mt-4 text-base md:text-lg">
+                Aapke practice ko digital azadi, taaki aap sirf apne patients pe focus kar saken.
+            </p>
+            <button
+                class="mt-6 md:mt-8 px-6 py-3 bg-[#23b4c9] hover:bg-[#1ca3b5] text-white font-semibold rounded-full shadow-md hover:scale-105 transition">
+                See It In Action
+            </button>
+        </div>
+        <!-- Right Doctor Image -->
+        <div class="mt-10 md:mt-0 md:w-1/2 flex justify-center">
+            <img src="doctor.jpg" alt="Doctor Illustration" class="w-56 md:w-72 lg:w-80 object-contain">
+        </div>
+    </section>
+
+    <!-- Benefits Section (Interactive) -->
+    <section id="benefits" class="py-16 bg-gray-50">
+        <div class="max-w-6xl mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-12">Why Choose DOCARE?</h2>
+
+            <!-- Benefit Cards (Tabs) -->
+            <div class="grid md:grid-cols-3 gap-6">
+                <div data-benefit="expand"
+                    class="p-6 bg-white rounded-xl shadow hover:shadow-lg transition cursor-pointer border-2 border-transparent">
+                    <div class="text-[#23b4c9] mb-4 text-4xl">🌍</div>
+                    <h3 class="text-xl font-semibold mb-2">Expand Reach</h3>
+                    <p class="text-gray-600">Connect with more patients effortlessly through our digital tools.</p>
+                </div>
+
+                <div data-benefit="streamline"
+                    class="p-6 bg-white rounded-xl shadow hover:shadow-lg transition cursor-pointer border-2 border-transparent">
+                    <div class="text-[#23b4c9] mb-4 text-4xl">⚙️</div>
+                    <h3 class="text-xl font-semibold mb-2">Streamline Management</h3>
+                    <p class="text-gray-600">Manage appointments, billing, and patient records in one place.</p>
+                </div>
+
+                <div data-benefit="enhance"
+                    class="p-6 bg-white rounded-xl shadow hover:shadow-lg transition cursor-pointer border-2 border-transparent">
+                    <div class="text-[#23b4c9] mb-4 text-4xl">💙</div>
+                    <h3 class="text-xl font-semibold mb-2">Enhance Patient Experience</h3>
+                    <p class="text-gray-600">Deliver a seamless and satisfying journey for your patients.</p>
+                </div>
+            </div>
+
+            <!-- Dynamic Content Container -->
+            <div id="benefit-content" class="mt-12"></div>
+        </div>
+    </section>
+    <!-- doctor section  -->
+    <section id="demo" class="bg-white py-16">
+        <div class="px-6 md:px-12">
+            <h2 class="text-3xl font-bold text-center mb-4">Find Your Doctor</h2>
+            <p class="text-center text-gray-600 max-w-2xl mx-auto mb-8">
+                Use the filters below to view doctors by specialty and click on any doctor to see more details.
+            </p>
+
+            <!-- Modified Filter Buttons -->
+            <div id="doctor-filters" class="flex flex-wrap gap-3 mb-6 justify-center">
+                <button data-filter="all"
+                    class="filter-btn bg-gradient-to-r from-[#3acfd5] to-[#3a9dd5] text-white px-4 py-1 rounded-full font-medium shadow hover:opacity-90 transition">
+                    All
+                </button>
+                <button data-filter="heart"
+                    class="filter-btn bg-gray-200 text-gray-700 px-4 py-1 rounded-full font-medium shadow hover:bg-gray-300 transition">
+                    Heart Specialist
+                </button>
+                <button data-filter="lady"
+                    class="filter-btn bg-gray-200 text-gray-700 px-4 py-1 rounded-full font-medium shadow hover:bg-gray-300 transition">
+                    Lady Care
+                </button>
+                <button data-filter="pedia"
+                    class="filter-btn bg-gray-200 text-gray-700 px-4 py-1 rounded-full font-medium shadow hover:bg-gray-300 transition">
+                    Pediatrician
+                </button>
+                <button data-filter="neuro"
+                    class="filter-btn bg-gray-200 text-gray-700 px-4 py-1 rounded-full font-medium shadow hover:bg-gray-300 transition">
+                    Neurologist
+                </button>
+            </div>
+
+            <!-- Doctor Cards -->
+            <div id="doctor-cards" class="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+                <!-- Heart Specialists -->
+                <div class="doctor-card bg-white border rounded-lg shadow p-4 flex flex-col items-center cursor-pointer"
+                    data-specialty="heart">
+                    <div class="w-20 h-20 rounded-full overflow-hidden mb-3">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" class="w-full h-full object-cover"
+                            alt="Dr. Anjali Singh">
+                    </div>
+                    <p class="font-semibold text-lg text-gray-800">Dr. Anjali Singh</p>
+                    <span class="text-sm text-gray-500">Heart Specialist</span>
+                </div>
+                <div class="doctor-card bg-white border rounded-lg shadow p-4 flex flex-col items-center cursor-pointer"
+                    data-specialty="heart">
+                    <div class="w-20 h-20 rounded-full overflow-hidden mb-3">
+                        <img src="https://randomuser.me/api/portraits/men/67.jpg" class="w-full h-full object-cover"
+                            alt="Dr. Suresh Patel">
+                    </div>
+                    <p class="font-semibold text-lg text-gray-800">Dr. Suresh Patel</p>
+                    <span class="text-sm text-gray-500">Heart Specialist</span>
+                </div>
+
+                <!-- Lady Care -->
+                <div class="doctor-card bg-white border rounded-lg shadow p-4 flex flex-col items-center cursor-pointer"
+                    data-specialty="lady">
+                    <div class="w-20 h-20 rounded-full overflow-hidden mb-3">
+                        <img src="https://randomuser.me/api/portraits/women/50.jpg" class="w-full h-full object-cover"
+                            alt="Dr. Sunita Verma">
+                    </div>
+                    <p class="font-semibold text-lg text-gray-800">Dr. Sunita Verma</p>
+                    <span class="text-sm text-gray-500">Lady Care</span>
+                </div>
+
+                <!-- Pediatricians -->
+                <div class="doctor-card bg-white border rounded-lg shadow p-4 flex flex-col items-center cursor-pointer"
+                    data-specialty="pedia">
+                    <div class="w-20 h-20 rounded-full overflow-hidden mb-3">
+                        <img src="https://randomuser.me/api/portraits/men/31.jpg" class="w-full h-full object-cover"
+                            alt="Dr. Manoj Tiwari">
+                    </div>
+                    <p class="font-semibold text-lg text-gray-800">Dr. Manoj Tiwari</p>
+                    <span class="text-sm text-gray-500">Pediatrician</span>
+                </div>
+
+                <!-- Neurologists -->
+                <div class="doctor-card bg-white border rounded-lg shadow p-4 flex flex-col items-center cursor-pointer"
+                    data-specialty="neuro">
+                    <div class="w-20 h-20 rounded-full overflow-hidden mb-3">
+                        <img src="https://randomuser.me/api/portraits/men/21.jpg" class="w-full h-full object-cover"
+                            alt="Dr. Rakesh Sharma">
+                    </div>
+                    <p class="font-semibold text-lg text-gray-800">Dr. Rakesh Sharma</p>
+                    <span class="text-sm text-gray-500">Neurologist</span>
+                </div>
+                <div class="doctor-card bg-white border rounded-lg shadow p-4 flex flex-col items-center cursor-pointer"
+                    data-specialty="neuro">
+                    <div class="w-20 h-20 rounded-full overflow-hidden mb-3">
+                        <img src="https://randomuser.me/api/portraits/women/42.jpg" class="w-full h-full object-cover"
+                            alt="Dr. Meena Kapoor">
+                    </div>
+                    <p class="font-semibold text-lg text-gray-800">Dr. Meena Kapoor</p>
+                    <span class="text-sm text-gray-500">Neurologist</span>
+                </div>
+            </div>
+
+            <!-- Doctor Details -->
+            <div id="doctor-details" class="mt-8 p-6 bg-white rounded-xl shadow hidden max-w-4xl mx-auto">
+                <h3 id="doctor-name" class="text-2xl font-bold mb-4"></h3>
+                <p id="doctor-specialty" class="text-gray-700 mb-2"></p>
+                <p id="doctor-bio" class="text-gray-700 mb-2"></p>
+                <p class="text-gray-700">Contact: <a id="doctor-contact" href="#"
+                        class="text-blue-600 hover:underline"></a></p>
+                <button id="close-details"
+                    class="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">Close</button>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- whats our doctor say  -->
+    <section id="testimonials" class="bg-gradient-to-b from-[#e6f8fb] to-white py-16">
+        <div class="max-w-5xl mx-auto px-4">
+            <h2 class="text-4xl font-extrabold text-center text-gray-800 mb-4">What Our Doctors Say</h2>
+            <p class="text-center text-lg text-gray-600 mb-12 max-w-3xl mx-auto">
+                Don’t just take our word for it. Here’s what doctors in Bihar and across India have to say about their
+                experience with DOCARE.
+            </p>
+            <div class="grid md:grid-cols-3 gap-8">
+
+                <!-- Testimonial 1 -->
+                <div class="relative bg-white rounded-2xl shadow-xl border border-teal-100 p-8 flex flex-col">
+                    <div
+                        class="absolute -top-6 left-6 bg-gradient-to-tr from-teal-400 to-blue-200 rounded-full p-2 shadow">
+                        <svg class="h-7 w-7 text-white" fill="none" stroke="currentColor" stroke-width="2"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M17 8h2a2 2 0 012 2v8a2 2 0 01-2 2H7a2 2 0 01-2-2v-8a2 2 0 012-2h2m6-4v4m0 0L9 5m3 3h.01">
+                            </path>
+                        </svg>
+                    </div>
+                    <blockquote class="text-gray-700 italic mt-6 mb-6 flex-1">
+                        “DOCARE use karne se patients milna bahut aasan ho gaya hai. Ab phone pe time waste nahi hota.
+                        Sab kuch ekdum smooth chalta hai.”
+                    </blockquote>
+                    <div class="mt-auto pt-3 border-t border-teal-100">
+                        <div class="font-bold text-[#0f9c8b]">Dr. Rahul Kumar</div>
+                        <div class="text-sm text-[#25b1b2] mt-1">Pediatrician, Patna</div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="relative bg-white rounded-2xl shadow-xl border border-blue-100 p-8 flex flex-col">
+                    <div
+                        class="absolute -top-6 left-6 bg-gradient-to-tr from-pink-400 to-blue-300 rounded-full p-2 shadow">
+                        <svg class="h-7 w-7 text-white" fill="none" stroke="currentColor" stroke-width="2"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 19V6h13M9 11h7"></path>
+                        </svg>
+                    </div>
+                    <blockquote class="text-gray-700 italic mt-6 mb-6 flex-1">
+                        “Pehle clinic ka hisaab-kitaab mushkil tha. Lekin DOCARE ke baad, sab kuch organized hai.
+                        Patient feedback bhi bahut accha mil raha hai.”
+                    </blockquote>
+                    <div class="mt-auto pt-3 border-t border-blue-100">
+                        <div class="font-bold text-[#c026d3]">Dr. Anjali Singh</div>
+                        <div class="text-sm text-[#6D28D9] mt-1">Lady Care, Muzaffarpur</div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="relative bg-white rounded-2xl shadow-xl border border-indigo-100 p-8 flex flex-col">
+                    <div
+                        class="absolute -top-6 left-6 bg-gradient-to-tr from-indigo-500 to-cyan-300 rounded-full p-2 shadow">
+                        <svg class="h-7 w-7 text-white" fill="none" stroke="currentColor" stroke-width="2"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8 17l4-4m0 0l4 4m-4-4V3"></path>
+                        </svg>
+                    </div>
+                    <blockquote class="text-gray-700 italic mt-6 mb-6 flex-1">
+                        “My practice has seen a 40% growth in new patients since I joined DOCARE. The platform is truly
+                        a game-changer for independent practitioners.”
+                    </blockquote>
+                    <div class="mt-auto pt-3 border-t border-indigo-100">
+                        <div class="font-bold text-[#2563eb]">Dr. Vikram Malhotra</div>
+                        <div class="text-sm text-[#3b82f6] mt-1">Neurologist, Delhi</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- footer  -->
+    <footer class="bg-gradient-to-br from-gray-900 to-gray-800 text-white py-10">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+
+            <!-- Contact Info -->
+            <div>
+                <h2 class="text-2xl font-bold mb-4">Ready to Transform Your Practice?</h2>
+                <p class="mb-6 text-gray-300">
+                    For a free consultation or more details on how DOCARE can help you, we are here to assist.
+                </p>
+                <div class="space-y-3">
+                    <p class="font-bold">📞 ALOK RAJ <br><span class="font-normal">+91 74882 60611</span></p>
+                </div>
+                <a href="#"
+                    class="mt-6 inline-block bg-gradient-to-r text-white px-6 py-3 rounded-lg hover:bg-emerald-600 transition">
+                    Call for a Free Consultation
+                </a>
+            </div>
+
+            <!-- Login Card -->
+            <div class="flex justify-end pr-6">
+                <div
+                    class="bg-white rounded-2xl shadow-2xl border border-gray-100 p-6 sm:p-7 max-w-sm w-full text-center overflow-visible">
+                    <h3 class="text-2xl font-extrabold text-gray-900">
+                        Welcome to <span class="text-[#3a9dd5]">DOCARE</span>
+                    </h3>
+                    <p class="mt-2 text-gray-500">Login as</p>
+
+                    <div class="mt-5 grid grid-cols-2 gap-3">
+                        <a href="doctor-login.html"
+                            class="bg-gradient-to-r from-[#3acfd5] to-[#3a9dd5] hover:bg-emerald-600 text-white py-3 rounded-xl font-semibold shadow hover:shadow-lg transition duration-300">
+                            👨‍⚕️ Doctor
+                        </a>
+                        <a href="hospital-login.html"
+                            class="bg-gradient-to-r from-[#3acfd5] to-[#3a9dd5] hover:bg-emerald-600 text-white py-3 rounded-xl font-semibold shadow hover:shadow-lg transition duration-300">
+                            🏥 Hospital
+                        </a>
+                    </div>
+
+                    <p class="mt-5 text-sm text-gray-500">
+                        Don't have an account?
+                        <a href="signup.html" class="text-[#3a9dd5] hover:underline">Sign Up</a>
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+
+
+    <!-- Scripts -->
+    <script>
+        // Mobile menu
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        menuBtn?.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+
+        // Interactive Benefits
+        const benefitCards = document.querySelectorAll('[data-benefit]');
+        const benefitContent = document.getElementById('benefit-content');
+
+        // Content blocks
+        const contents = {
+            expand: `
+                <div class="bg-white p-8 rounded-xl shadow fade-in">
+                <div class="md:flex md:items-center md:justify-between mb-6">
+                    <h3 class="text-2xl font-bold">Grow Your Practice</h3>
+                    <span class="text-sm text-teal-700 bg-teal-50 border border-teal-200 px-3 py-1 rounded-full">Visibility • Discovery • New Patients</span>
+                </div>
+                <p class="text-gray-600 mb-8">
+                    Reach patients actively searching for your specialty. Elevate your online presence with a polished profile, verified reviews, and smart discovery tools.
+                </p>
+                <!-- KPI row -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="rounded-xl border border-gray-100 p-6 bg-gradient-to-b from-white to-gray-50 shadow-sm">
+                    <div class="text-3xl font-extrabold text-gray-900">+68%</div>
+                    <div class="text-sm text-gray-500 mt-1">Monthly Profile Views</div>
+                    </div>
+                    <div class="rounded-xl border border-gray-100 p-6 bg-gradient-to-b from-white to-gray-50 shadow-sm">
+                    <div class="text-3xl font-extrabold text-gray-900">2.4×</div>
+                    <div class="text-sm text-gray-500 mt-1">Appointment Requests</div>
+                    </div>
+                    <div class="rounded-xl border border-gray-100 p-6 bg-gradient-to-b from-white to-gray-50 shadow-sm">
+                    <div class="text-3xl font-extrabold text-gray-900">+4.7★</div>
+                    <div class="text-sm text-gray-500 mt-1">Avg. Patient Rating</div>
+                    </div>
+                </div>
+                <!-- Simple visual bars (no external libs) -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="p-6 rounded-xl border border-gray-100 bg-gray-50">
+                    <h4 class="font-semibold text-gray-800 mb-3">New Patients Per Month</h4>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between text-sm text-gray-600">
+                        <span>Jan</span><span>25 → 42</span>
+                        </div>
+                        <div class="w-full bg-white rounded-lg border border-gray-200 p-2">
+                        <div class="h-2 bg-gray-300 rounded w-[35%]"></div>
+                        <div class="h-2 bg-teal-500 rounded w-[60%] mt-2"></div>
+                        </div>
+
+                        <div class="flex items-center justify-between text-sm text-gray-600 mt-3">
+                        <span>Feb</span><span>28 → 50</span>
+                        </div>
+                        <div class="w-full bg-white rounded-lg border border-gray-200 p-2">
+                        <div class="h-2 bg-gray-300 rounded w-[40%]"></div>
+                        <div class="h-2 bg-teal-500 rounded w-[70%] mt-2"></div>
+                        </div>
+
+                        <div class="flex items-center justify-between text-sm text-gray-600 mt-3">
+                        <span>Mar</span><span>30 → 62</span>
+                        </div>
+                        <div class="w-full bg-white rounded-lg border border-gray-200 p-2">
+                        <div class="h-2 bg-gray-300 rounded w-[45%]"></div>
+                        <div class="h-2 bg-teal-500 rounded w-[85%] mt-2"></div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4 text-xs text-gray-500 mt-4">
+                        <span class="inline-flex items-center gap-1"><span class="w-3 h-3 bg-gray-300 rounded-sm"></span>Before</span>
+                        <span class="inline-flex items-center gap-1"><span class="w-3 h-3 bg-teal-500 rounded-sm"></span>With DOCARE</span>
+                    </div>
+                    </div>
+
+                    <div class="p-6 rounded-xl border border-gray-100 bg-gray-50">
+                    <h4 class="font-semibold text-gray-800 mb-3">Top Discovery Channels</h4>
+                    <ul class="space-y-3">
+                        <li class="flex items-center justify-between">
+                        <span class="text-gray-700">Search (SEO)</span>
+                        <span class="text-sm text-gray-500">46%</span>
+                        </li>
+                        <li class="flex items-center justify-between">
+                        <span class="text-gray-700">Profile & Reviews</span>
+                        <span class="text-sm text-gray-500">31%</span>
+                        </li>
+                        <li class="flex items-center justify-between">
+                        <span class="text-gray-700">Referrals</span>
+                        <span class="text-sm text-gray-500">15%</span>
+                        </li>
+                        <li class="flex items-center justify-between">
+                        <span class="text-gray-700">Social</span>
+                        <span class="text-sm text-gray-500">8%</span>
+                        </li>
+                    </ul>
+                    <div class="mt-4 h-2 rounded bg-white border border-gray-200 overflow-hidden">
+                        <div class="h-2 bg-teal-600" style="width:46%"></div>
+                        <div class="h-2 bg-teal-400" style="width:31%"></div>
+                        <div class="h-2 bg-teal-300" style="width:15%"></div>
+                        <div class="h-2 bg-teal-200" style="width:8%"></div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            `,
+            streamline: `
+                <div class="bg-white p-8 rounded-xl shadow fade-in">
+                <h3 class="text-2xl font-bold mb-3">Effortless Scheduling</h3>
+                <p class="text-gray-600 mb-8">
+                    Say goodbye to chaotic scheduling. Our intuitive digital calendar allows patients to book appointments seamlessly, while you maintain full control.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Before DOCARE -->
+                    <div class="p-6 bg-red-50 border border-red-200 rounded-xl shadow-sm">
+                    <h4 class="text-lg font-semibold text-red-700 mb-1 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                        Before DOCARE
+                    </h4>
+                    <p class="text-gray-700">Manual bookings, phone tag, and scheduling conflicts.</p>
+                    </div>
+
+                    <!-- After DOCARE -->
+                    <div class="p-6 bg-green-50 border border-green-200 rounded-xl shadow-sm">
+                    <h4 class="text-lg font-semibold text-green-700 mb-1 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                        After DOCARE
+                    </h4>
+                    <p class="text-gray-700">Automated, organized, and conflict-free scheduling.</p>
+                    </div>
+                </div>
+                </div>
+            `,
+            enhance: `
+                <div class="bg-gray-50 p-8 rounded-xl shadow fade-in">
+                <h3 class="text-2xl font-bold mb-4">The Seamless Patient Journey</h3>
+                <p class="text-gray-600 mb-8">
+                    DOCARE provides a user-friendly experience from start to finish, building patient trust and loyalty in your practice.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                    <div>
+                    <div class="text-3xl font-bold mb-2">1.</div>
+                    <h4 class="font-semibold text-lg">Register & Find</h4>
+                    <p class="text-gray-600">Patient registers and finds your profile.</p>
+                    </div>
+                    <div>
+                    <div class="text-3xl font-bold mb-2">2.</div>
+                    <h4 class="font-semibold text-lg">Book Easily</h4>
+                    <p class="text-gray-600">Books an appointment in seconds.</p>
+                    </div>
+                    <div>
+                    <div class="text-3xl font-bold mb-2">3.</div>
+                    <h4 class="font-semibold text-lg">Get Notified</h4>
+                    <p class="text-gray-600">Receives timely reminders.</p>
+                    </div>
+                    <div>
+                    <div class="text-3xl font-bold mb-2">4.</div>
+                    <h4 class="font-semibold text-lg">Smooth Visit</h4>
+                    <p class="text-gray-600">Arrives prepared for a smooth visit.</p>
+                    </div>
+                </div>
+                </div>
+            `
+        };
+
+        // Click handlers
+        benefitCards.forEach(card => {
+            card.addEventListener('click', () => {
+                // remove active styles
+                benefitCards.forEach(c => c.classList.remove('border-[#23b4c9]', 'bg-blue-50', 'shadow-md'));
+                // add active styles
+                card.classList.add('border-[#23b4c9]', 'bg-blue-50', 'shadow-md');
+
+                // swap content
+                const type = card.getAttribute('data-benefit');
+                benefitContent.innerHTML = contents[type];
+
+                // auto-scroll into view if content is below fold
+                const rect = benefitContent.getBoundingClientRect();
+                if (window.innerHeight < rect.top + 200) {
+                    benefitContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Optional: choose a default open tab (uncomment one)
+        // document.querySelector('[data-benefit="expand"]').click();
+        // document.querySelector('[data-benefit="streamline"]').click();
+        // document.querySelector('[data-benefit="enhance"]').click();
+    </script>
+  
+  
+    <script>
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const doctorCards = document.querySelectorAll('.doctor-card');
+        const detailsPanel = document.getElementById('doctor-details');
+        const nameEl = document.getElementById('doctor-name');
+        const specialtyEl = document.getElementById('doctor-specialty');
+        const bioEl = document.getElementById('doctor-bio');
+        const contactEl = document.getElementById('doctor-contact');
+        const closeBtn = document.getElementById('close-details');
+
+        const doctorsData = {
+            "Dr. Anjali Singh": {
+                specialty: "Heart Specialist",
+                bio: "Experienced cardiologist with 15 years in practice. Specialized in non-invasive cardiac procedures and preventive care.",
+                contact: "anjali.singh@example.com"
+            },
+            "Dr. Suresh Patel": {
+                specialty: "Heart Specialist",
+                bio: "Cardiologist experienced in advanced heart surgery and patient care.",
+                contact: "suresh.patel@example.com"
+            },
+            "Dr. Sunita Verma": {
+                specialty: "Lady Care",
+                bio: "Gynecologist and women’s health expert dedicated to compassionate patient care.",
+                contact: "sunita.verma@example.com"
+            },
+            "Dr. Manoj Tiwari": {
+                specialty: "Pediatrician",
+                bio: "Certified pediatrician focused on child wellness, vaccinations, and adolescent health.",
+                contact: "manoj.tiwari@example.com"
+            },
+            "Dr. Rakesh Sharma": {
+                specialty: "Neurologist",
+                bio: "Neurologist specializing in brain, spine, and nerve disorders with compassionate care.",
+                contact: "rakesh.sharma@example.com"
+            },
+            "Dr. Meena Kapoor": {
+                specialty: "Neurologist",
+                bio: "Expert in neurological disorders and patient education.",
+                contact: "meena.kapoor@example.com"
+            }
+        };
+
+        function resetFilters() {
+            filterButtons.forEach(btn => {
+                btn.classList.remove('bg-gradient-to-r', 'from-[#3acfd5]', 'to-[#3a9dd5]', 'text-white');
+                btn.classList.add('bg-gray-200', 'text-gray-700');
+            });
+        }
+
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const filter = btn.dataset.filter;
+                resetFilters();
+                btn.classList.remove('bg-gray-200', 'text-gray-700');
+                btn.classList.add('bg-gradient-to-r', 'from-[#3acfd5]', 'to-[#3a9dd5]', 'text-white');
+
+                doctorCards.forEach(card => {
+                    if (filter === 'all' || card.dataset.specialty === filter) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                detailsPanel.classList.add('hidden');
+            });
+        });
+
+        doctorCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const name = card.querySelector('p').innerText;
+                const doc = doctorsData[name];
+                if (doc) {
+                    nameEl.textContent = name;
+                    specialtyEl.textContent = `Specialty: ${doc.specialty}`;
+                    bioEl.textContent = doc.bio;
+                    contactEl.href = `mailto:${doc.contact}`;
+                    contactEl.textContent = doc.contact;
+                    detailsPanel.classList.remove('hidden');
+                    detailsPanel.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        closeBtn.addEventListener('click', () => {
+            detailsPanel.classList.add('hidden');
+        });
+
+        // Initialize with "All" filter active
+        document.querySelector('[data-filter="all"]').click();
+    </script>
+
+</body>
+
+</html>
