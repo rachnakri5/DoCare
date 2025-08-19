@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sign in – doCare</title>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Poppins (to match your site) -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --brand:#23b4c9;       /* doCare brand */
+      --brand-dark:#1aa1b4;  /* hover */
+    }
+    body{ font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+    /* subtle card shadow like big tech forms */
+    .elev{
+      box-shadow:
+        0 1px 2px rgba(0,0,0,.06),
+        0 4px 16px rgba(0,0,0,.08);
+    }
+    /* focus ring */
+    .ring-brand:focus{
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(35,180,201,.25);
+    }
+    /* animation for showing/hiding forms */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in {
+      animation: fadeIn 0.3s ease-out forwards;
+    }
+  </style>
+</head>
+<body class="h-full bg-gray-50 text-gray-800">
+
+  <main class="min-h-full flex flex-col">
+    <!-- Center container -->
+    <div class="flex-1 flex items-center justify-center px-4 py-10">
+      <!-- Main Login Card -->
+      <div id="login-card" class="w-full max-w-md bg-white rounded-2xl elev p-8">
+        <!-- Branding -->
+        <div class="flex items-center justify-center gap-2 mb-2">
+          <span class="text-2xl font-semibold tracking-tight text-[var(--brand)]">DoCare</span>
+        </div>
+
+        <h1 class="text-xl font-semibold text-center mt-2">Sign in</h1>
+        <p class="text-sm text-gray-600 text-center mt-1">Use your doCare account</p>
+
+        <!-- Form -->
+        <form id="loginForm" class="mt-6" novalidate>
+          <!-- STEP 1: Email -->
+          <div id="step-email">
+            <label for="email" class="block text-sm font-medium mb-1">Email or phone</label>
+            <input id="email" name="email" type="email"
+                   class="w-full rounded-lg border border-gray-300 px-4 py-3 ring-brand"
+                   placeholder="you@example.com" autocomplete="username" />
+            <p id="emailErr" class="text-sm text-red-600 mt-1 hidden">Enter a valid email.</p>
+
+            <div class="mt-3 flex items-center justify-between">
+              <a href="#" id="forgotEmailBtn" class="text-sm text-[var(--brand)] hover:underline">Forgot email?</a>
+            </div>
+
+            <p class="text-xs text-gray-600 mt-6 leading-relaxed">
+              Not your computer? Use <span class="font-medium">Guest mode</span> to sign in privately.
+              <a href="#" class="text-[var(--brand)] hover:underline">Learn more</a>
+            </p>
+
+            <div class="mt-6 flex items-center justify-between">
+              <a href="#" id="createAccountBtn" class="text-[var(--brand)] font-medium hover:underline text-sm">Create account</a>
+              <button type="button" id="nextBtn"
+                      class="inline-flex items-center justify-center rounded-full bg-[var(--brand)] hover:bg-[var(--brand-dark)] text-white px-6 py-2.5 font-medium">
+                Next
+              </button>
+            </div>
+          </div>
+
+          <!-- STEP 2: Password -->
+          <div id="step-pass" class="hidden">
+            <div class="flex items-center gap-2 -mt-2 mb-4">
+              <div class="text-sm text-gray-700 truncate" id="emailEcho"></div>
+              <button type="button" id="changeEmail" class="text-[var(--brand)] text-sm hover:underline">Change</button>
+            </div>
+
+            <label for="password" class="block text-sm font-medium mb-1">Enter your password</label>
+            <div class="relative">
+              <input id="password" name="password" type="password"
+                    class="w-full rounded-lg border border-gray-300 px-4 py-3 pr-12 ring-brand"
+                    placeholder="••••••••" autocomplete="current-password" />
+              <button type="button" id="togglePass"
+                      class="absolute inset-y-0 right-0 px-3 text-sm text-gray-600 hover:text-gray-800">
+                Show
+              </button>
+            </div>
+            <p id="passErr" class="text-sm text-red-600 mt-1 hidden">Password can't be empty.</p>
+
+            <div class="mt-3 flex items-center justify-between">
+              <label class="inline-flex items-center gap-2 select-none">
+                <input id="remember" type="checkbox" class="h-4 w-4 text-[var(--brand)] border-gray-300 rounded" />
+                <span class="text-sm text-gray-700">Stay signed in</span>
+              </label>
+              <a href="#" class="text-sm text-[var(--brand)] hover:underline">Forgot password?</a>
+            </div>
+
+            <div class="mt-6 flex items-center justify-end">
+              <button type="submit"
+                      class="inline-flex items-center justify-center rounded-full bg-[var(--brand)] hover:bg-[var(--brand-dark)] text-white px-6 py-2.5 font-medium">
+                Sign in
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Forgot Email Card (hidden by default) -->
+      <div id="forgot-email-card" class="w-full max-w-md bg-white rounded-2xl elev p-8 hidden animate-fade-in">
+        <div class="flex items-center justify-center gap-2 mb-2">
+          <span class="text-2xl font-semibold tracking-tight text-[var(--brand)]">doCare</span>
+        </div>
+
+        <h1 class="text-2xl font-semibold text-center mt-2">Find your email</h1>
+        <p class="text-sm text-gray-600 text-center mt-1">Enter your phone number or recovery email</p>
+
+        <div class="mt-6">
+          <label for="recovery-email" class="block text-sm font-medium mb-1">Phone number or email</label>
+          <input id="recovery-email" type="text"
+                 class="w-full rounded-lg border border-gray-300 px-4 py-3 ring-brand"
+                 placeholder="Enter phone or recovery email" />
+          
+          <div class="mt-6 flex items-center justify-end">
+            <button type="button" id="backToLoginFromForgot"
+                    class="mr-4 text-sm text-[var(--brand)] font-medium hover:underline">Back</button>
+            <button type="button" id="recoveryNextBtn"
+                    class="inline-flex items-center justify-center rounded-full bg-[var(--brand)] hover:bg-[var(--brand-dark)] text-white px-6 py-2.5 font-medium">
+              Next
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Create Account Card (hidden by default) -->
+      <div id="create-account-card" class="w-full max-w-md bg-white rounded-2xl elev p-8 hidden animate-fade-in">
+        <div class="flex items-center justify-center gap-2 mb-2">
+          <span class="text-2xl font-semibold tracking-tight text-[var(--brand)]">doCare</span>
+        </div>
+
+        <h1 class="text-2xl font-semibold text-center mt-2">Create account</h1>
+        <p class="text-sm text-gray-600 text-center mt-1">Create your doCare account</p>
+
+        <form id="createAccountForm" class="mt-6">
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label for="first-name" class="block text-sm font-medium mb-1">First name</label>
+              <input id="first-name" type="text"
+                     class="w-full rounded-lg border border-gray-300 px-4 py-3 ring-brand"
+                     placeholder="First name" />
+            </div>
+            <div>
+              <label for="last-name" class="block text-sm font-medium mb-1">Last name</label>
+              <input id="last-name" type="text"
+                     class="w-full rounded-lg border border-gray-300 px-4 py-3 ring-brand"
+                     placeholder="Last name" />
+            </div>
+          </div>
+
+          <div class="mt-4">
+            <label for="new-email" class="block text-sm font-medium mb-1">Email</label>
+            <input id="new-email" type="email"
+                   class="w-full rounded-lg border border-gray-300 px-4 py-3 ring-brand"
+                   placeholder="you@example.com" />
+          </div>
+
+          <div class="mt-4">
+            <label for="new-password" class="block text-sm font-medium mb-1">Password</label>
+            <input id="new-password" type="password"
+                   class="w-full rounded-lg border border-gray-300 px-4 py-3 ring-brand"
+                   placeholder="••••••••" />
+            <p class="text-xs text-gray-600 mt-1">Use 8 or more characters with a mix of letters, numbers & symbols</p>
+          </div>
+
+          <div class="mt-4">
+            <label for="confirm-password" class="block text-sm font-medium mb-1">Confirm password</label>
+            <input id="confirm-password" type="password"
+                   class="w-full rounded-lg border border-gray-300 px-4 py-3 ring-brand"
+                   placeholder="••••••••" />
+          </div>
+
+          <div class="mt-6 flex items-center justify-between">
+            <button type="button" id="backToLoginFromCreate"
+                    class="text-sm text-[var(--brand)] font-medium hover:underline">Sign in instead</button>
+            <button type="submit"
+                    class="inline-flex items-center justify-center rounded-full bg-[var(--brand)] hover:bg-[var(--brand-dark)] text-white px-6 py-2.5 font-medium">
+              Create account
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="px-4 md:px-8 py-4 text-sm text-gray-600 flex items-center justify-between">
+      <div>
+        <label for="lang" class="sr-only">Language</label>
+        <select id="lang" class="bg-transparent px-2 py-1 border border-transparent hover:border-gray-300 rounded-md">
+          <option>English (India)</option>
+          <option>हिन्दी</option>
+          <option>বাংলা</option>
+          <option>मराठी</option>
+          <option>தமிழ்</option>
+        </select>
+      </div>
+      <nav class="flex gap-4">
+        <a href="#" class="hover:underline">Help</a>
+        <a href="#" class="hover:underline">Privacy</a>
+        <a href="#" class="hover:underline">Terms</a>
+      </nav>
+    </footer>
+  </main>
+
+  <script>
+    // DOM Elements
+    const emailInp = document.getElementById('email');
+    const emailErr = document.getElementById('emailErr');
+    const nextBtn = document.getElementById('nextBtn');
+    const stepEmail = document.getElementById('step-email');
+    const stepPass = document.getElementById('step-pass');
+    const emailEcho = document.getElementById('emailEcho');
+    const changeEmail = document.getElementById('changeEmail');
+    const passInp = document.getElementById('password');
+    const passErr = document.getElementById('passErr');
+    const togglePass = document.getElementById('togglePass');
+    const form = document.getElementById('loginForm');
+    const forgotEmailBtn = document.getElementById('forgotEmailBtn');
+    const createAccountBtn = document.getElementById('createAccountBtn');
+    const loginCard = document.getElementById('login-card');
+    const forgotEmailCard = document.getElementById('forgot-email-card');
+    const createAccountCard = document.getElementById('create-account-card');
+    const backToLoginFromForgot = document.getElementById('backToLoginFromForgot');
+    const backToLoginFromCreate = document.getElementById('backToLoginFromCreate');
+    const recoveryNextBtn = document.getElementById('recoveryNextBtn');
+
+    // Form validation functions
+    function validateEmail(v) {
+      const mail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const phone = /^[0-9]{8,15}$/;
+      return mail.test(v) || phone.test(v);
+    }
+
+    // Event Listeners
+    nextBtn.addEventListener('click', () => {
+      const v = emailInp.value.trim();
+      if (!validateEmail(v)) {
+        emailErr.classList.remove('hidden');
+        emailInp.classList.add('border-red-400');
+        emailInp.focus();
+        return;
+      }
+      emailErr.classList.add('hidden');
+      emailInp.classList.remove('border-red-400');
+
+      emailEcho.textContent = v;
+      stepEmail.classList.add('hidden');
+      stepPass.classList.remove('hidden');
+      passInp.focus();
+    });
+
+    changeEmail.addEventListener('click', () => {
+      stepPass.classList.add('hidden');
+      stepEmail.classList.remove('hidden');
+      emailInp.focus();
+    });
+
+    togglePass.addEventListener('click', () => {
+      const isPwd = passInp.type === 'password';
+      passInp.type = isPwd ? 'text' : 'password';
+      togglePass.textContent = isPwd ? 'Hide' : 'Show';
+    });
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!passInp.value.trim()) {
+        passErr.classList.remove('hidden');
+        passInp.classList.add('border-red-400');
+        passInp.focus();
+        return;
+      }
+      passErr.classList.add('hidden');
+      passInp.classList.remove('border-red-400');
+      alert('Signed in as ' + emailEcho.textContent);
+    });
+
+    // Forgot email flow
+    forgotEmailBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      loginCard.classList.add('hidden');
+      forgotEmailCard.classList.remove('hidden');
+    });
+
+    backToLoginFromForgot.addEventListener('click', () => {
+      forgotEmailCard.classList.add('hidden');
+      loginCard.classList.remove('hidden');
+    });
+
+    recoveryNextBtn.addEventListener('click', () => {
+      const recoveryInput = document.getElementById('recovery-email').value.trim();
+      if (recoveryInput) {
+        alert('Recovery instructions sent to ' + recoveryInput);
+      } else {
+        alert('Please enter a phone number or recovery email');
+      }
+    });
+
+    // Create account flow
+    createAccountBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      loginCard.classList.add('hidden');
+      createAccountCard.classList.remove('hidden');
+    });
+
+    backToLoginFromCreate.addEventListener('click', () => {
+      createAccountCard.classList.add('hidden');
+      loginCard.classList.remove('hidden');
+    });
+
+    document.getElementById('createAccountForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const firstName = document.getElementById('first-name').value.trim();
+      const lastName = document.getElementById('last-name').value.trim();
+      const email = document.getElementById('new-email').value.trim();
+      const password = document.getElementById('new-password').value.trim();
+      const confirmPassword = document.getElementById('confirm-password').value.trim();
+
+      if (!firstName || !lastName || !email || !password || !confirmPassword) {
+        alert('Please fill in all fields');
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        alert('Passwords do not match');
+        return;
+      }
+
+      alert(`Account created for ${firstName} ${lastName} (${email})`);
+    });
+  </script>
+</body>
+</html>
+
+
+
+
