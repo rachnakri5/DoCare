@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DOCARE - Platform for Independent Doctors</title>
+
+    <!-- External Resources -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Custom Styles -->
+    <style>
+        /* Base Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Doctor Card Animation */
+        .doctor-card {
+            transition: all 0.3s ease;
+            transform: translateY(0);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .doctor-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+            border-color: #3acfd5;
+            animation: pulse-shadow 2s infinite;
+        }
+
+        .doctor-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(58, 207, 213, 0.1) 0%, rgba(58, 157, 213, 0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .doctor-card:hover::before {
+            opacity: 1;
+        }
+
+        .doctor-card .doctor-image-container {
+            transition: all 0.3s ease;
+            transform: scale(1);
+        }
+
+        .doctor-card:hover .doctor-image-container {
+            transform: scale(1.05);
+        }
+
+        .doctor-card .doctor-name {
+            transition: color 0.3s ease;
+        }
+
+        .doctor-card:hover .doctor-name {
+            color: #3a9dd5;
+        }
+
+        .doctor-card .doctor-specialty {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .doctor-card:hover .doctor-specialty {
+            transform: translateY(3px);
+        }
+
+        .doctor-card .doctor-specialty::after {
+            content: 'Click for details →';
+            display: block;
+            font-size: 0.75rem;
+            color: #3acfd5;
+            margin-top: 0.2rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .doctor-card:hover .doctor-specialty::after {
+            opacity: 1;
+        }
+
+        /* Animations */
+        @keyframes pulse-shadow {
+            0% {
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+            }
+
+            50% {
+                box-shadow: 0 15px 25px rgba(58, 207, 213, 0.3);
+            }
+
+            100% {
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+            }
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 300ms ease-out forwards;
+            opacity: 0;
+            transform: translateY(6px);
+        }
+
+        /* Card Border Animation */
+        .card-animated-border {
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-animated-border::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border: 3px solid #23b4c9;
+            border-radius: 0.75rem;
+            pointer-events: none;
+            box-sizing: border-box;
+            z-index: 2;
+            opacity: 0;
+            transform: scaleX(0);
+            transition: opacity 0.2s, transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-animated-border.active::after {
+            opacity: 1;
+            transform: scaleX(1);
+            transition: opacity 0.2s, transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Navbar Link Underline Animation */
+        .nav-link-underline {
+            position: relative;
+        }
+
+        .nav-link-underline::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 0;
+            height: 2px;
+            background-color: white;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link-underline:hover::after {
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body class="bg-white text-gray-800 overflow-x-hidden">
+    <!-- Navigation Bar -->
+    <header>
+        <nav
+            class="fixed top-0 left-0 w-full z-50 bg-gradient-to-r from-[#3acfd5] to-[#3a9dd5] px-6 md:px-8 py-4 flex justify-between items-center shadow-md">
+            <div class="text-2xl font-bold text-white">
+                DO<span class="font-normal">CARE</span>
+            </div>
+
+            <ul class="hidden md:flex space-x-6 text-white font-medium">
+                <li class="nav-link-underline">
+                    <a href="#benefits">Benefits</a>
+                </li>
+                <li class="nav-link-underline">
+                    <a href="#demo">Demo</a>
+                </li>
+                <li class="nav-link-underline">
+                    <a href="#testimonials">Testimonials</a>
+                </li>
+                <li class="nav-link-underline">
+                    <a href="#how-it-works">How It Works</a>
+                </li>
+            </ul>
+
+            <div class="hidden md:flex space-x-4">
+                <button id="contact-btn"
+                    class="bg-white/20 backdrop-blur-sm text-white font-semibold px-5 py-2 rounded-full border border-white hover:bg-white hover:text-[#3acfd5] transition">
+                    Contact Us
+                </button>
+                <a href="UserloginPanel.html">
+                    <button
+                        class="bg-white/20 backdrop-blur-sm text-white font-semibold px-5 py-2 rounded-full border border-white hover:bg-white hover:text-[#3acfd5] transition">
+                        Login
+                    </button>
+                </a>
+            </div>
+
+            <div class="md:hidden flex items-center">
+                <button id="menu-btn" class="text-white focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <div id="mobile-menu"
+                class="hidden absolute top-full left-0 w-full bg-gradient-to-r from-[#3acfd5] to-[#3a9dd5] md:hidden z-40">
+                <ul class="flex flex-col space-y-4 px-6 py-4 text-white font-medium">
+                    <li><a href="#benefits" class="cursor-pointer hover:text-gray-200">Benefits</a></li>
+                    <li><a href="#demo" class="cursor-pointer hover:text-gray-200">Demo</a></li>
+                    <li><a href="#testimonials" class="cursor-pointer hover:text-gray-200">Testimonials</a></li>
+                    <li><a href="#how-it-works" class="cursor-pointer hover:text-gray-200">How It Works</a></li>
+                    <li>
+                        <button id="contact-btn-mobile"
+                            class="w-full bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-full text-center border border-white hover:bg-white hover:text-[#3acfd5] transition">
+                            Contact Us
+                        </button>
+                    </li>
+                    <li>
+                        <a href="loginPanel.html"
+                            class="block w-full bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-full text-center border border-white hover:bg-white hover:text-[#3acfd5] transition">
+                            Login
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <main>
+        <section
+            class="bg-gradient-to-b from-[#e6f8fb] to-white px-6 md:px-20 flex flex-col md:flex-row items-center justify-center min-h-screen pt-24 md:pt-32">
+            <div class="max-w-xl text-center md:text-left">
+                <h1 class="text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight">
+                    A Platform Designed for
+                    <span class="text-[#23b4c9]">Aatmanirbhar Doctors</span>
+                </h1>
+                <p class="text-gray-600 mt-4 text-base md:text-lg">
+                    Aapke practice ko digital azadi, taaki aap sirf apne patients pe focus kar saken.
+                </p>
+                <button
+                    class="mt-6 md:mt-8 px-6 py-3 bg-[#23b4c9] hover:bg-[#1ca3b5] text-white font-semibold rounded-full shadow-md hover:scale-105 transition">
+                    See It In Action
+                </button>
+            </div>
+
+            <div class="mt-10 md:mt-0 md:w-1/2 flex justify-center">
+                <img src="doctor.jpg" alt="Doctor Illustration" class="w-56 md:w-72 lg:w-80 object-contain">
+            </div>
+        </section>
+
+        <!-- Benefits Section -->
+        <section id="benefits" class="w-full bg-[#e6f8fb] py-16">
+            <div class="max-w-6xl mx-auto px-2 md:px-6">
+                <h2 class="text-3xl font-bold text-center mb-12">Why Choose DOCARE?</h2>
+
+                <div class="grid md:grid-cols-3 gap-6">
+                    <!-- Benefit Card 1 -->
+                    <div data-benefit="expand"
+                        class="card-animated-border active p-6 bg-white rounded-2xl shadow hover:shadow-lg transition cursor-pointer border-2 border-transparent">
+                        <div class="text-4xl mb-4">🌍</div>
+                        <h3 class="text-xl font-semibold mb-2">Expand Reach</h3>
+                        <p class="text-gray-600">Connect with more patients effortlessly through our digital tools.</p>
+                    </div>
+
+                    <!-- Benefit Card 2 -->
+                    <div data-benefit="streamline"
+                        class="card-animated-border p-6 bg-white rounded-2xl shadow hover:shadow-lg transition cursor-pointer border-2 border-transparent">
+                        <div class="text-4xl mb-4">⚙️</div>
+                        <h3 class="text-xl font-semibold mb-2">Streamline Management</h3>
+                        <p class="text-gray-600">Manage appointments, billing, and patient records in one place.</p>
+                    </div>
+
+                    <!-- Benefit Card 3 -->
+                    <div data-benefit="enhance"
+                        class="card-animated-border p-6 bg-white rounded-2xl shadow hover:shadow-lg transition cursor-pointer border-2 border-transparent">
+                        <div class="text-4xl mb-4">💙</div>
+                        <h3 class="text-xl font-semibold mb-2">Enhance Patient Experience</h3>
+                        <p class="text-gray-600">Deliver a seamless and satisfying journey for your patients.</p>
+                    </div>
+                </div>
+
+                <!-- Dynamic Content Area -->
+                <div id="benefit-content" class="mt-12">
+                    <div id="expand-chart-section" class="fade-in bg-white max-w-4xl mx-auto p-0 mt-4">
+                        <h3 class="text-3xl font-bold text-center mb-4 text-[#1e293b]">Grow Your Practice</h3>
+                        <p class="text-gray-700 text-center mb-8 text-lg">
+                            Connect with a wider patient base looking for your specific expertise.<br>
+                            Our platform helps new patients find you easily, leading to steady practice growth.
+                        </p>
+                        <div class="overflow-x-auto flex justify-center">
+                            <canvas id="expandBarChart" width="750" height="340"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Doctor Demo Section -->
+        <section id="demo" class="bg-white py-16">
+            <div class="px-6 md:px-12">
+                <h2 class="text-3xl font-bold text-center mb-4">Top Specialists Available for Consultation</h2>
+                <p class="text-center text-gray-600 max-w-2xl mx-auto mb-8">
+                    Book appointments with India's leading medical experts across various specialties.
+                    All doctors are verified and have extensive experience in their fields.
+                </p>
+
+                <div class="relative max-w-6xl mx-auto mt-8 overflow-hidden">
+                    <button id="carouselLeft"
+                        class="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white border shadow-lg rounded-full w-12 h-12 flex items-center justify-center text-2xl text-[#23b4c9] hover:bg-[#23b4c9] hover:text-white transition cursor-pointer">
+                        &#8592;
+                    </button>
+
+                    <div id="doctorCarousel" class="overflow-hidden">
+                        <div id="doctorSlides" class="flex transition-transform duration-500 ease-in-out">
+
+                            <!-- Additional doctors -->
+
+                            <div class="min-w-full sm:min-w-[33.33%] p-2">
+                                <div class="doctor-card bg-white border rounded-2xl shadow p-6 flex flex-col items-center cursor-pointer"
+                                    data-doctor='{"name": "Dr. Anjali Singh", "specialty": "Cardiologist", "image": "https://randomuser.me/api/portraits/women/44.jpg", "hospital": "Apollo Hospital, Delhi", "address": "Mathura Road, New Delhi 110076", "experience": "15 years", "qualification": "MD, DM Cardiology", "contact": "011-2323-2323", "fees": "₹1500"}'>
+                                    <div class="doctor-image-container w-24 h-24 rounded-full overflow-hidden mb-3">
+                                        <img src="https://randomuser.me/api/portraits/women/44.jpg"
+                                            class="w-full h-full object-cover" alt="Dr. Anjali Singh" />
+                                    </div>
+                                    <p class="doctor-name font-bold text-xl text-gray-800 mb-1">Dr. Anjali Singh</p>
+                                    <span class="doctor-specialty text-lg text-gray-500">Cardiologist</span>
+                                </div>
+                            </div>
+
+                            <div class="min-w-full sm:min-w-[33.33%] p-2">
+                                <div class="doctor-card bg-white border rounded-2xl shadow p-6 flex flex-col items-center cursor-pointer"
+                                    data-doctor='{"name": "Dr. Suresh Patel", "specialty": "Cardiologist", "image": "https://randomuser.me/api/portraits/men/67.jpg", "hospital": "Fortis Hospital, Mumbai", "address": "Mulund Goregaon Link Road, Mumbai 400078", "experience": "12 years", "qualification": "MD, DM Cardiology", "contact": "022-6767-6767", "fees": "₹1200"}'>
+                                    <div class="doctor-image-container w-24 h-24 rounded-full overflow-hidden mb-3">
+                                        <img src="https://randomuser.me/api/portraits/men/67.jpg"
+                                            class="w-full h-full object-cover" alt="Dr. Suresh Patel" />
+                                    </div>
+                                    <p class="doctor-name font-bold text-xl text-gray-800 mb-1">Dr. Suresh Patel</p>
+                                    <span class="doctor-specialty text-lg text-gray-500">Cardiologist</span>
+                                </div>
+                            </div>
+
+                            <div class="min-w-full sm:min-w-[33.33%] p-2">
+                                <div class="doctor-card bg-white border rounded-2xl shadow p-6 flex flex-col items-center cursor-pointer"
+                                    data-doctor='{"name": "Dr. Neha Gupta", "specialty": "Dermatologist", "image": "https://randomuser.me/api/portraits/women/33.jpg", "hospital": "BLK Super Speciality Hospital", "address": "Pusa Road, New Delhi 110005", "experience": "9 years", "qualification": "MD Dermatology", "contact": "011-3040-3040", "fees": "₹1300"}'>
+                                    <div class="doctor-image-container w-24 h-24 rounded-full overflow-hidden mb-3">
+                                        <img src="https://randomuser.me/api/portraits/women/33.jpg"
+                                            class="w-full h-full object-cover" alt="Dr. Neha Gupta" />
+                                    </div>
+                                    <p class="doctor-name font-bold text-xl text-gray-800 mb-1">Dr. Neha Gupta</p>
+                                    <span class="doctor-specialty text-lg text-gray-500">Dermatologist</span>
+                                </div>
+                            </div>
+
+                            <div class="min-w-full sm:min-w-[33.33%] p-2">
+                                <div class="doctor-card bg-white border rounded-2xl shadow p-6 flex flex-col items-center cursor-pointer"
+                                    data-doctor='{"name": "Dr. Rajiv Malhotra", "specialty": "Orthopedic Surgeon", "image": "https://randomuser.me/api/portraits/men/22.jpg", "hospital": "Artemis Hospital, Gurgaon", "address": "Sector 51, Gurugram 122001", "experience": "14 years", "qualification": "MS Orthopedics", "contact": "0124-6161-616", "fees": "₹1800"}'>
+                                    <div class="doctor-image-container w-24 h-24 rounded-full overflow-hidden mb-3">
+                                        <img src="https://randomuser.me/api/portraits/men/22.jpg"
+                                            class="w-full h-full object-cover" alt="Dr. Rajiv Malhotra" />
+                                    </div>
+                                    <p class="doctor-name font-bold text-xl text-gray-800 mb-1">Dr. Rajiv Malhotra</p>
+                                    <span class="doctor-specialty text-lg text-gray-500">Orthopedic Surgeon</span>
+                                </div>
+                            </div>
+
+                            <div class="min-w-full sm:min-w-[33.33%] p-2">
+                                <div class="doctor-card bg-white border rounded-2xl shadow p-6 flex flex-col items-center cursor-pointer"
+                                    data-doctor='{"name": "Dr. Priyanka Reddy", "specialty": "Ophthalmologist", "image": "https://randomuser.me/api/portraits/women/28.jpg", "hospital": "Shroff Eye Centre", "address": "Bandra West, Mumbai 400050", "experience": "11 years", "qualification": "MS Ophthalmology", "contact": "022-2626-2626", "fees": "₹1600"}'>
+                                    <div class="doctor-image-container w-24 h-24 rounded-full overflow-hidden mb-3">
+                                        <img src="https://randomuser.me/api/portraits/women/28.jpg"
+                                            class="w-full h-full object-cover" alt="Dr. Priyanka Reddy" />
+                                    </div>
+                                    <p class="doctor-name font-bold text-xl text-gray-800 mb-1">Dr. Priyanka Reddy</p>
+                                    <span class="doctor-specialty text-lg text-gray-500">Ophthalmologist</span>
+                                </div>
+                            </div>
+
+                            <div class="min-w-full sm:min-w-[33.33%] p-2">
+                                <div class="doctor-card bg-white border rounded-2xl shadow p-6 flex flex-col items-center cursor-pointer"
+                                    data-doctor='{"name": "Dr. Arjun Khanna", "specialty": "ENT Specialist", "image": "https://randomuser.me/api/portraits/men/41.jpg", "hospital": "Kokilaben Hospital, Mumbai", "address": "Four Bungalows, Andheri West", "experience": "13 years", "qualification": "MS ENT", "contact": "022-3091-9191", "fees": "₹1400"}'>
+                                    <div class="doctor-image-container w-24 h-24 rounded-full overflow-hidden mb-3">
+                                        <img src="https://randomuser.me/api/portraits/men/41.jpg"
+                                            class="w-full h-full object-cover" alt="Dr. Arjun Khanna" />
+                                    </div>
+                                    <p class="doctor-name font-bold text-xl text-gray-800 mb-1">Dr. Arjun Khanna</p>
+                                    <span class="doctor-specialty text-lg text-gray-500">ENT Specialist</span>
+                                </div>
+                            </div>
+
+                            <div class="min-w-full sm:min-w-[33.33%] p-2">
+                                <div class="doctor-card bg-white border rounded-2xl shadow p-6 flex flex-col items-center cursor-pointer"
+                                    data-doctor='{"name": "Dr. Nandini Sharma", "specialty": "Pediatric Cardiologist", "image": "https://randomuser.me/api/portraits/women/39.jpg", "hospital": "AIIMS, New Delhi", "address": "Ansari Nagar, New Delhi 110029", "experience": "10 years", "qualification": "DM Pediatric Cardiology", "contact": "011-2658-8585", "fees": "₹2000"}'>
+                                    <div class="doctor-image-container w-24 h-24 rounded-full overflow-hidden mb-3">
+                                        <img src="https://randomuser.me/api/portraits/women/39.jpg"
+                                            class="w-full h-full object-cover" alt="Dr. Nandini Sharma" />
+                                    </div>
+                                    <p class="doctor-name font-bold text-xl text-gray-800 mb-1">Dr. Nandini Sharma</p>
+                                    <span class="doctor-specialty text-lg text-gray-500">Pediatric Cardiologist</span>
+                                </div>
+                            </div>
+
+                            <div class="min-w-full sm:min-w-[33.33%] p-2">
+                                <div class="doctor-card bg-white border rounded-2xl shadow p-6 flex flex-col items-center cursor-pointer"
+                                    data-doctor='{"name": "Dr. Vikas Agarwal", "specialty": "Gastroenterologist", "image": "https://randomuser.me/api/portraits/men/55.jpg", "hospital": "Medanta Hospital, Gurgaon", "address": "Sector 38, Gurugram 122001", "experience": "16 years", "qualification": "DM Gastroenterology", "contact": "0124-4141-414", "fees": "₹2200"}'>
+                                    <div class="doctor-image-container w-24 h-24 rounded-full overflow-hidden mb-3">
+                                        <img src="https://randomuser.me/api/portraits/men/55.jpg"
+                                            class="w-full h-full object-cover" alt="Dr. Vikas Agarwal" />
+                                    </div>
+                                    <p class="doctor-name font-bold text-xl text-gray-800 mb-1">Dr. Vikas Agarwal</p>
+                                    <span class="doctor-specialty text-lg text-gray-500">Gastroenterologist</span>
+                                </div>
+                            </div>
+
+                            <div class="min-w-full sm:min-w-[33.33%] p-2">
+                                <div class="doctor-card bg-white border rounded-2xl shadow p-6 flex flex-col items-center cursor-pointer"
+                                    data-doctor='{"name": "Dr. Neha Gupta", "specialty": "Dermatologist", "image": "https://randomuser.me/api/portraits/women/33.jpg", "hospital": "BLK Super Speciality Hospital", "address": "Pusa Road, New Delhi 110005", "experience": "9 years", "qualification": "MD Dermatology", "contact": "011-3040-3040", "fees": "₹1300"}'>
+                                    <div class="doctor-image-container w-24 h-24 rounded-full overflow-hidden mb-3">
+                                        <img src="https://randomuser.me/api/portraits/women/33.jpg"
+                                            class="w-full h-full object-cover" alt="Dr. Neha Gupta" />
+                                    </div>
+                                    <p class="doctor-name font-bold text-xl text-gray-800 mb-1">Dr. Neha Gupta</p>
+                                    <span class="doctor-specialty text-lg text-gray-500">Dermatologist</span>
+                                </div>
+                            </div>
+
+                            <div class="min-w-full sm:min-w-[33.33%] p-2">
+                                <div class="doctor-card bg-white border rounded-2xl shadow p-6 flex flex-col items-center cursor-pointer"
+                                    data-doctor='{"name": "Dr. Rajiv Malhotra", "specialty": "Orthopedic Surgeon", "image": "https://randomuser.me/api/portraits/men/22.jpg", "hospital": "Artemis Hospital, Gurgaon", "address": "Sector 51, Gurugram 122001", "experience": "14 years", "qualification": "MS Orthopedics", "contact": "0124-6161-616", "fees": "₹1800"}'>
+                                    <div class="doctor-image-container w-24 h-24 rounded-full overflow-hidden mb-3">
+                                        <img src="https://randomuser.me/api/portraits/men/22.jpg"
+                                            class="w-full h-full object-cover" alt="Dr. Rajiv Malhotra" />
+                                    </div>
+                                    <p class="doctor-name font-bold text-xl text-gray-800 mb-1">Dr. Rajiv Malhotra</p>
+                                    <span class="doctor-specialty text-lg text-gray-500">Orthopedic Surgeon</span>
+                                </div>
+                            </div>
+
+                            <div class="min-w-full sm:min-w-[33.33%] p-2">
+                                <div class="doctor-card bg-white border rounded-2xl shadow p-6 flex flex-col items-center cursor-pointer"
+                                    data-doctor='{"name": "Dr. Priyanka Reddy", "specialty": "Ophthalmologist", "image": "https://randomuser.me/api/portraits/women/28.jpg", "hospital": "Shroff Eye Centre", "address": "Bandra West, Mumbai 400050", "experience": "11 years", "qualification": "MS Ophthalmology", "contact": "022-2626-2626", "fees": "₹1600"}'>
+                                    <div class="doctor-image-container w-24 h-24 rounded-full overflow-hidden mb-3">
+                                        <img src="https://randomuser.me/api/portraits/women/28.jpg"
+                                            class="w-full h-full object-cover" alt="Dr. Priyanka Reddy" />
+                                    </div>
+                                    <p class="doctor-name font-bold text-xl text-gray-800 mb-1">Dr. Priyanka Reddy</p>
+                                    <span class="doctor-specialty text-lg text-gray-500">Ophthalmologist</span>
+                                </div>
+                            </div>
+
+                            <div class="min-w-full sm:min-w-[33.33%] p-2">
+                                <div class="doctor-card bg-white border rounded-2xl shadow p-6 flex flex-col items-center cursor-pointer"
+                                    data-doctor='{"name": "Dr. Arjun Khanna", "specialty": "ENT Specialist", "image": "https://randomuser.me/api/portraits/men/41.jpg", "hospital": "Kokilaben Hospital, Mumbai", "address": "Four Bungalows, Andheri West", "experience": "13 years", "qualification": "MS ENT", "contact": "022-3091-9191", "fees": "₹1400"}'>
+                                    <div class="doctor-image-container w-24 h-24 rounded-full overflow-hidden mb-3">
+                                        <img src="https://randomuser.me/api/portraits/men/41.jpg"
+                                            class="w-full h-full object-cover" alt="Dr. Arjun Khanna" />
+                                    </div>
+                                    <p class="doctor-name font-bold text-xl text-gray-800 mb-1">Dr. Arjun Khanna</p>
+                                    <span class="doctor-specialty text-lg text-gray-500">ENT Specialist</span>
+                                </div>
+                            </div>
+
+                            <div class="min-w-full sm:min-w-[33.33%] p-2">
+                                <div class="doctor-card bg-white border rounded-2xl shadow p-6 flex flex-col items-center cursor-pointer"
+                                    data-doctor='{"name": "Dr. Nandini Sharma", "specialty": "Pediatric Cardiologist", "image": "https://randomuser.me/api/portraits/women/39.jpg", "hospital": "AIIMS, New Delhi", "address": "Ansari Nagar, New Delhi 110029", "experience": "10 years", "qualification": "DM Pediatric Cardiology", "contact": "011-2658-8585", "fees": "₹2000"}'>
+                                    <div class="doctor-image-container w-24 h-24 rounded-full overflow-hidden mb-3">
+                                        <img src="https://randomuser.me/api/portraits/women/39.jpg"
+                                            class="w-full h-full object-cover" alt="Dr. Nandini Sharma" />
+                                    </div>
+                                    <p class="doctor-name font-bold text-xl text-gray-800 mb-1">Dr. Nandini Sharma</p>
+                                    <span class="doctor-specialty text-lg text-gray-500">Pediatric Cardiologist</span>
+                                </div>
+                            </div>
+
+                            <div class="min-w-full sm:min-w-[33.33%] p-2">
+                                <div class="doctor-card bg-white border rounded-2xl shadow p-6 flex flex-col items-center cursor-pointer"
+                                    data-doctor='{"name": "Dr. Vikas Agarwal", "specialty": "Gastroenterologist", "image": "https://randomuser.me/api/portraits/men/55.jpg", "hospital": "Medanta Hospital, Gurgaon", "address": "Sector 38, Gurugram 122001", "experience": "16 years", "qualification": "DM Gastroenterology", "contact": "0124-4141-414", "fees": "₹2200"}'>
+                                    <div class="doctor-image-container w-24 h-24 rounded-full overflow-hidden mb-3">
+                                        <img src="https://randomuser.me/api/portraits/men/55.jpg"
+                                            class="w-full h-full object-cover" alt="Dr. Vikas Agarwal" />
+                                    </div>
+                                    <p class="doctor-name font-bold text-xl text-gray-800 mb-1">Dr. Vikas Agarwal</p>
+                                    <span class="doctor-specialty text-lg text-gray-500">Gastroenterologist</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button id="carouselRight"
+                        class="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white border shadow-lg rounded-full w-12 h-12 flex items-center justify-center text-2xl text-[#23b4c9] hover:bg-[#23b4c9] hover:text-white transition cursor-pointer">
+                        &#8594;
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section id="testimonials" class="bg-gradient-to-b from-[#e6f8fb] to-white py-16">
+            <div class="max-w-5xl mx-auto px-4">
+                <h2 class="text-4xl font-extrabold text-center text-gray-800 mb-4">What Our Doctors Say</h2>
+                <p class="text-center text-lg text-gray-600 mb-12 max-w-3xl mx-auto">
+                    Don't just take our word for it. Here's what doctors in Bihar and across India have to say about
+                    their
+                    experience with DOCARE.
+                </p>
+
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Testimonial 1 -->
+                    <div class="relative bg-white rounded-2xl shadow-xl border border-teal-100 p-8 flex flex-col">
+                        <div
+                            class="absolute -top-6 left-6 bg-gradient-to-tr from-teal-400 to-blue-200 rounded-full p-2 shadow">
+                            <svg class="h-7 w-7 text-white" fill="none" stroke="currentColor" stroke-width="2"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M17 8h2a2 2 0 012 2v8a2 2 0 01-2 2H7a2 2 0 01-2-2v-8a2 2 0 012-2h2m6-4v4m0 0L9 5m3 3h.01">
+                                </path>
+                            </svg>
+                        </div>
+                        <blockquote class="text-gray-700 italic mt-6 mb-6 flex-1">
+                            "DOCARE use karne se patients milna bahut aasan ho gaya hai. Ab phone pe time waste nahi
+                            hota.
+                            Sab kuch ekdum smooth chalta hai."
+                        </blockquote>
+                        <div class="mt-auto pt-3 border-t border-teal-100">
+                            <div class="font-bold text-[#0f9c8b]">Dr. Rahul Kumar</div>
+                            <div class="text-sm text-[#25b1b2] mt-1">Pediatrician, Patna</div>
+                        </div>
+                    </div>
+
+                    <!-- Testimonial 2 -->
+                    <div class="relative bg-white rounded-2xl shadow-xl border border-blue-100 p-8 flex flex-col">
+                        <div
+                            class="absolute -top-6 left-6 bg-gradient-to-tr from-pink-400 to-blue-300 rounded-full p-2 shadow">
+                            <svg class="h-7 w-7 text-white" fill="none" stroke="currentColor" stroke-width="2"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 19V6h13M9 11h7"></path>
+                            </svg>
+                        </div>
+                        <blockquote class="text-gray-700 italic mt-6 mb-6 flex-1">
+                            "Pehle clinic ka hisaab-kitaab mushkil tha. Lekin DOCARE ke baad, sab kuch organized hai.
+                            Patient feedback bhi bahut accha mil raha hai."
+                        </blockquote>
+                        <div class="mt-auto pt-3 border-t border-blue-100">
+                            <div class="font-bold text-[#c026d3]">Dr. Anjali Singh</div>
+                            <div class="text-sm text-[#6D28D9] mt-1">Lady Care, Muzaffarpur</div>
+                        </div>
+                    </div>
+
+                    <!-- Testimonial 3 -->
+                    <div class="relative bg-white rounded-2xl shadow-xl border border-indigo-100 p-8 flex flex-col">
+                        <div
+                            class="absolute -top-6 left-6 bg-gradient-to-tr from-indigo-500 to-cyan-300 rounded-full p-2 shadow">
+                            <svg class="h-7 w-7 text-white" fill="none" stroke="currentColor" stroke-width="2"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8 17l4-4m0 0l4 4m-4-4V3">
+                                </path>
+                            </svg>
+                        </div>
+                        <blockquote class="text-gray-700 italic mt-6 mb-6 flex-1">
+                            "My practice has seen a 40% growth in new patients since I joined DOCARE. The platform is
+                            truly
+                            a game-changer for independent practitioners."
+                        </blockquote>
+                        <div class="mt-auto pt-3 border-t border-indigo-100">
+                            <div class="font-bold text-[#2563eb]">Dr. Vikram Malhotra</div>
+                            <div class="text-sm text-[#3b82f6] mt-1">Neurologist, Delhi</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section id="how-it-works" class="bg-[#e6f8fb] py-16">
+            <div class="max-w-5xl mx-auto px-4">
+                <h2 class="text-4xl font-extrabold mb-6 text-center text-gray-900 font-poppins">Getting Started is
+                    Simple
+                </h2>
+                <p class="text-lg text-gray-700 mb-12 text-center">
+                    This section outlines the straightforward process for joining and using DOCARE. In just three simple
+                    steps, you can set up your professional presence on our platform and begin connecting with patients.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Step 1 -->
+                    <div
+                        class="bg-white rounded-2xl shadow-lg p-8 flex flex-col items-center text-center hover:-translate-y-1 hover:shadow-xl transition">
+                        <div class="mb-5">
+                            <span
+                                class="inline-flex items-center justify-center h-12 w-12 rounded-full bg-[#3acfd5]/20 text-xl font-semibold text-[#3acfd5] shadow-sm border border-[#3acfd5]/30">1</span>
+                        </div>
+                        <h3 class="font-semibold text-lg mb-2 text-gray-900">Create Your Profile</h3>
+                        <p class="text-gray-600">
+                            Build a comprehensive profile featuring your specialization, experience, and clinic details.
+                        </p>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div
+                        class="bg-white rounded-2xl shadow-lg p-8 flex flex-col items-center text-center hover:-translate-y-1 hover:shadow-xl transition">
+                        <div class="mb-5">
+                            <span
+                                class="inline-flex items-center justify-center h-12 w-12 rounded-full bg-[#3a9dd5]/20 text-xl font-semibold text-[#3a9dd5] shadow-sm border border-[#3a9dd5]/30">2</span>
+                        </div>
+                        <h3 class="font-semibold text-lg mb-2 text-gray-900">Manage Your Schedule</h3>
+                        <p class="text-gray-600">
+                            Utilize our digital calendar to set your availability and manage appointments effortlessly.
+                        </p>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div
+                        class="bg-white rounded-2xl shadow-lg p-8 flex flex-col items-center text-center hover:-translate-y-1 hover:shadow-xl transition">
+                        <div class="mb-5">
+                            <span
+                                class="inline-flex items-center justify-center h-12 w-12 rounded-full bg-gradient-to-r from-[#3acfd5]/20 to-[#3a9dd5]/20 text-xl font-semibold text-[#1e293b] shadow-sm border border-[#3acfd5]/25">3</span>
+                        </div>
+                        <h3 class="font-semibold text-lg mb-2 text-gray-900">Connect with Patients</h3>
+                        <p class="text-gray-600">
+                            Start receiving appointment requests and communicate easily through the platform.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="w-full bg-[#181c23] text-gray-400">
+            <div class="max-w-7xl mx-auto px-6 py-10 flex flex-col md:flex-row md:justify-between md:items-start gap-8">
+                <!-- Brand and Contact -->
+                <div>
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="text-white text-2xl font-bold">DO<span class="text-[#3acfd5]">CARE</span></span>
+                    </div>
+                    <p class="text-sm mb-4 max-w-xs">A platform for Aatmanirbhar doctors. For consultation or more
+                        details,
+                        contact:</p>
+                    <span class="block font-semibold text-[#3acfd5] text-sm">📞 ALOK RAJ</span>
+                    <a href="tel:+917488260611" class="block mb-6 text-white hover:underline text-sm font-bold">+91
+                        74882
+                        60611</a>
+                    <a href="#"
+                        class="inline-block bg-gradient-to-r from-[#3acfd5] to-[#3a9dd5] text-white px-5 py-2 rounded-full font-medium text-xs shadow hover:scale-105 transition">
+                        Call for Consultation
+                    </a>
+                </div>
+
+                <!-- CTA -->
+                <div class="flex flex-col gap-2 min-w-[200px]">
+                    <span class="text-gray-300 font-semibold mb-1">Join the DOCARE Network</span>
+                    <p class="text-sm text-gray-400 max-w-[200px]">
+                        Ready to connect with more patients and grow your practice?
+                        <a href="Doctor_Hospital_LoginPanel.html" class="text-[#3acfd5] font-semibold hover:underline">Access your dashboard
+                            now
+                            →</a>
+                    </p>
+                </div>
+
+                <!-- Social & Legal -->
+                <div class="flex flex-col items-start gap-3">
+                    <div class="flex gap-4 text-xl mb-2">
+                        <a href="#" class="hover:text-[#3acfd5]" aria-label="LinkedIn"><i
+                                class="fab fa-linkedin"></i></a>
+                        <a href="#" class="hover:text-pink-400" aria-label="Instagram"><i
+                                class="fab fa-instagram"></i></a>
+                        <a href="#" class="hover:text-red-500" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="hover:text-sky-400" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
+                        <a href="#" class="hover:text-purple-500" aria-label="Twitch"><i class="fab fa-twitch"></i></a>
+                    </div>
+                    <div class="flex flex-wrap gap-x-3 gap-y-1 text-xs">
+                        <a href="LegalCondition.html" class="hover:text-white underline underline-offset-4">Terms</a>
+
+                        <a href="LegalCondition.html" class="hover:text-white underline underline-offset-4">Privacy</a>
+
+                        <span>|</span>
+
+                        <a href="LegalCondition.html" class="hover:text-white underline underline-offset-4">Cookies</a>
+
+                        <a href="LegalCondition.html" class="hover:text-white underline underline-offset-4">Sitemap</a>
+                    </div>
+                    <span class="text-xs mt-2 text-gray-500">© 2025 Leafinity Solution. All rights reserved.</span>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <!-- contact form  -->
+    <div id="contact-modal"
+        class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm p-4"
+        aria-modal="true" role="dialog">
+        <div
+            class="relative bg-white p-8 md:p-10 rounded-xl shadow-2xl w-full max-w-lg mx-auto transform transition-all duration-300 scale-95 opacity-0">
+            <button id="close-modal-btn" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition"
+                aria-label="Close modal">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+            </button>
+
+            <div id="contact-form-container">
+                <h2
+                    class="text-3xl md:text-4xl font-bold text-center mb-4 text-[#1e293b] heading-underline mx-auto w-max">
+                    Contact Us
+                </h2>
+                <p class="text-center text-gray-600 mb-8 text-lg">
+                    Have a query? We're here to help.
+                </p>
+                <form id="contact-form" action="#" method="POST" class="space-y-6">
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                        <input type="text" id="name" name="name" required
+                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-[#3acfd5] focus:border-[#3acfd5] sm:text-sm transition duration-300 ease-in-out">
+                    </div>
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                        <input type="email" id="email" name="email" required
+                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-[#3acfd5] focus:border-[#3acfd5] sm:text-sm transition duration-300 ease-in-out">
+                    </div>
+                    <div>
+                        <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Your Message</label>
+                        <textarea id="message" name="message" rows="5" required
+                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-[#3acfd5] focus:border-[#3acfd5] sm:text-sm transition duration-300 ease-in-out"></textarea>
+                    </div>
+                    <div class="pt-2">
+                        <button type="submit"
+                            class="w-full flex justify-center py-3 px-4 border border-transparent rounded-full shadow-sm text-sm font-semibold text-white bg-gradient-to-r from-[#3acfd5] to-[#3a9dd5] hover:from-[#3a9dd5] hover:to-[#3acfd5] transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#3acfd5]">
+                            Send Message
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div id="success-message" class="hidden text-center py-12">
+                <svg class="mx-auto h-16 w-16 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <h3 class="mt-4 text-2xl font-bold text-gray-900">Query Sent!</h3>
+                <p class="mt-2 text-lg text-gray-600">
+                    Thank you for reaching out. We've received your message and will get back to you soon.
+                </p>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- JavaScript -->
+    <script src="main.js"></script>
+</body>
+
+</html>
